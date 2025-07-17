@@ -1,14 +1,16 @@
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Link } from "@mui/material";
 
-export default function Header(){
+export default function Header() {
 
-    return(
+    return (
         <header>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6">
-                        Decision Maker
-                    </Typography>
+                        <Link href="/" color="primary.contrastText" underline="none">
+                            <Typography variant="h6">
+                                Decision Maker
+                            </Typography>
+                        </Link>
                 </Toolbar>
             </AppBar>
         </header>

@@ -1,59 +1,59 @@
 import React, { useState } from 'react';
-import { Button, Container, FormControl, FormGroup, Input, InputLabel, Typography } from '@mui/material';
+import {
+    Button,
+    Container,
+    FormControl,
+    FormGroup,
+    TextField,
+    Typography,
+} from '@mui/material';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function CreateRoom() {
     const [options, setOptions] = useState(['']);
     const [decisionQuestion, setDecisionQuestion] = useState('');
+    const [name, setName] = useState("");
 
-    function handleOptionChange (index, value) {
+    function handleOptionChange(index, value) {
         const newOptions = [...options];
         newOptions[index] = value;
         setOptions(newOptions);
-    };
+    }
 
     async function handleCreateRoom(event) {
         event.preventDefault();
-        console.log("Creating room with question:", decisionQuestion);
-        console.log("Options:", options);
-        // Handle room creation logic here
+        console.log('Creating room with question:', decisionQuestion);
+        console.log('Options:', options);
+
+        
     }
 
     return (
         <>
             <Header />
             <Container>
-                <FormGroup>
+                <FormGroup sx={{marginTop: 5, gap: 2, width: '75%', marginLeft: 'auto', marginRight: 'auto'}}>
+                    <Typography variant="h6" gutterBottom color='primary.contrastText'>
+                            Decision Question
+                    </Typography>
+                    <TextField label="Decision Question" variant="outlined" placeholder="Enter Decision Question" value={decisionQuestion} onChange={(e) => setDecisionQuestion(e.target.value)} fullWidth/>
                     <FormControl>
-                        <InputLabel htmlFor="room-name">Decision Question</InputLabel>
-                        <Input id="room-name" type="text" placeholder="Enter Decision Question" value={decisionQuestion} onChange={(e) => setDecisionQuestion(e.target.value)}
-                        />
-                    </FormControl>
-
-                    <FormControl >
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant="h6" gutterBottom color='primary.contrastText'>
                             Options
                         </Typography>
-                        {options.map((option, index) => (
-                            <FormControl key={index} margin="dense">
-                                <InputLabel htmlFor={`option-${index}`}>Option {index + 1}</InputLabel>
-                                <Input id={`option-${index}`} type="text" placeholder={`Option ${index + 1}`} value={option} onChange={(e) => handleOptionChange(index, e.target.value)}/>
-                            </FormControl>
-                        ))}
-                        <Button variant="outlined" color="primary" onClick={() => setOptions([...options, ''])}>
-                            Add Option
-                        </Button>
-                    </FormControl>
-                </FormGroup>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleCreateRoom}
-                >
-                    Create Room
-                </Button>
+                        {options.map((option, index) => (
+                            <TextField key={index} label={`Option ${index + 1}`} variant="outlined" placeholder={`Enter Option ${index + 1}`} value={option} onChange={(e) => handleOptionChange(index, e.target.value)} fullWidth margin="dense"/>
+                        ))}
+                        <Button variant="contained" color="primary" onClick={() => setOptions([...options, ''])} sx={{ mt: 1 }}>Add Option</Button>
+                    </FormControl>
+                    <Typography variant="h6" gutterBottom color='primary.contrastText'>
+                            Name
+                    </Typography>
+                    <TextField label="Name" variant="outlined" placeholder="Enter Name" value={name} onChange={(e) => setName(e.target.value)} fullWidth/>
+                    <Button variant="contained" color="primary" onClick={handleCreateRoom}>Create Room</Button>
+                </FormGroup>
             </Container>
             <Footer />
         </>
