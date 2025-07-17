@@ -19,7 +19,45 @@ const theme = createTheme({
     },
     background: {
       default: '#121212',
-    }
+    },
+  },
+  components: {
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          color: '#d7dadc',
+          '::placeholder': {
+            color: '#d7dadc',
+            opacity: 1,
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: '#d7dadc',
+          '&.Mui-focused': {
+            color: '#d7dadc',
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '& fieldset': {
+            borderColor: '#004940',
+          },
+          '&:hover fieldset': {
+            borderColor: '#004940',
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: '#004940',
+          },
+        },
+      },
+    },
   },
 });
 
