@@ -2,15 +2,33 @@ import React, { useState } from 'react';
 import { Button, Container, FormGroup, TextField, Typography } from '@mui/material';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { db } from '../firebase/config';
+import { collection, addDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 export default function JoinRoom() {
     const [name, setName] = useState('');
     const [roomCode, setRoomCode] = useState('');
+    const navigate = useNavigate();
 
     async function handleJoinRoom(event) {
         event.preventDefault();
-        console.log('Joining room:', roomCode, 'with name:', name);
-        // join room stuff
+        
+        try{
+            const docRef = doc(db, 'rooms', roomCode);
+            const roomSnapshot = await getDoc(docRef);
+
+            await updateDoc(docRef, {
+                ["users." + name]: {
+                    submitted: false,
+                    percents: roomSnapshot.data().options.map(() => 0),
+                },
+            })
+            navigate("/virtual-room?roomId=" + roomCode + "&name=" + name);
+        }
+        catch (error) {
+            console.error("Error joining room: ", error);
+        }
     }
 
     return (
