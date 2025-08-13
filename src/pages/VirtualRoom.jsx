@@ -21,6 +21,7 @@ export default function VirtualRoom() {
     const [winner, setWinner] = useState("");
     const navigate = useNavigate();
     const [waiting, setWaiting] = useState(false);
+    const [numUsers, setNumUsers] = useState(0);
 
     const [searchParams] = useSearchParams();
     const roomId = searchParams.get('roomId');
@@ -28,6 +29,18 @@ export default function VirtualRoom() {
 
     useEffect(() => {
         fetchRoomData(roomId);
+
+        const docRef = doc(db, "rooms", roomId);
+        const unsubscribe = onSnapshot(docRef, (snapshot) => {
+            const data = snapshot.data();
+            if (data?.users) {
+                setNumUsers(Object.keys(data.users).length);
+            } else {
+                setNumUsers(0);
+            }
+        });
+
+        return () => unsubscribe();
     }, []);
 
 
@@ -125,8 +138,17 @@ export default function VirtualRoom() {
         <>
             <Header />
             <Container>
+                <Typography 
+                    variant="p" 
+                    sx={{ position: 'absolute', top: 20, right: 16, color: 'primary.contrastText' }}
+                >
+                    Number of users in room: {numUsers}
+                </Typography>
                 <Typography variant="h4" gutterBottom color='primary.contrastText' sx={{ marginTop: 5, textAlign: 'center' }}>
                     Join Code: {roomId}
+                </Typography>
+                <Typography variant="h4" gutterBottom color='primary.contrastText' sx={{ marginTop: 5, textAlign: 'center' }}>
+                    {decisionQuestion}
                 </Typography>
 
                 <FormGroup sx={{ marginTop: 5, gap: 2, width: '75%', marginLeft: 'auto', marginRight: 'auto' }}>
