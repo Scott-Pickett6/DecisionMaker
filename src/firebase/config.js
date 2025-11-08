@@ -5,6 +5,10 @@ import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+if (!import.meta.env.VITE_FIREBASE_API_KEY) {
+  throw new Error('Firebase API Key is not set in environment variables');
+}
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -22,4 +26,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export { db };
-const analytics = getAnalytics(app);
+
+// Only initialize analytics if we're in a browser environment
+if (typeof window !== 'undefined') {
+  getAnalytics(app);
+}
